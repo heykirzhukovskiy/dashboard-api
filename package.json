@@ -3,10 +3,11 @@
 	"version": "1.0.0",
 	"description": "API for me",
 	"main": "index.js",
-	"type": "module",
+	"type": "commonjs",
 	"scripts": {
-		"start": "tsc && node ./dist/index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "tsc && node ./dist/main.js",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "tsc && clear && exit"
 	},
 	"author": "Kirill Zhukovskiy",
 	"license": "ISC",
