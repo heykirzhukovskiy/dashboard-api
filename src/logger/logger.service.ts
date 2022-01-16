@@ -17,10 +17,10 @@ export class LoggerService {
 	}
 
 	error(...args: unknown[]): void {
-		this.logger.info(...args)
+		this.logger.error(...args)
 	}
 
 	warn(...args: unknown[]): void {
-		this.logger.info(...args)
+		this.logger.warn(...args)
 	}
 }

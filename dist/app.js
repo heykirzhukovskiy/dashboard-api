@@ -14,19 +14,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 const express_1 = __importDefault(require("express"));
-const users_1 = require("./users/users");
 class App {
-    constructor(logger) {
+    constructor(logger, userController, exceptionFilter) {
         this.app = (0, express_1.default)();
         this.port = 8000;
         this.logger = logger;
+        this.userController = userController;
+        this.exceptionFilter = exceptionFilter;
     }
     useRoutes() {
-        this.app.use('/users', users_1.userRouter);
+        const userRouter = this.userController.router;
+        this.app.use('/users', userRouter);
+    }
+    useExceptionFilters() {
+        this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             this.useRoutes();
+            this.useExceptionFilters();
             this.server = this.app.listen(this.port);
             this.logger.log(`Server started at http://localhost/${this.port}`);
         });

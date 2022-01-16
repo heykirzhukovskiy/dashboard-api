@@ -1,18 +1,21 @@
-import express from 'express'
+import { NextFunction, Request, Response } from 'express'
+import { BaseController } from '../common/base.controller'
+import { HTTPError } from '../errors/http-error.class'
+import { LoggerService } from './../logger/logger.service'
 
-const userRouter = express.Router()
+export class UserController extends BaseController {
+	constructor(logger: LoggerService) {
+		super(logger)
+		this.bindRoutes([
+			{ path: '/login', method: 'post', func: this.login },
+			{ path: '/register', method: 'post', func: this.register },
+		])
+	}
 
-userRouter.use((req, res, next) => {
-	console.log('Обработчик users')
-	next()
-})
-
-userRouter.post('/login', (req, res) => {
-	res.send('login')
-})
-
-userRouter.post('/register', (req, res) => {
-	res.send('register')
-})
-
-export { userRouter }
+	private login(req: Request, res: Response, next: NextFunction) {
+		next(new HTTPError(401, 'ошибка авторизации', 'login'))
+	}
+	private register(req: Request, res: Response, next: NextFunction) {
+		this.ok(res, 'register')
+	}
+}
