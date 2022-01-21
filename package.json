@@ -10,7 +10,8 @@
 		"build": "tsc && clear && exit",
 		"lint": "eslint ./src/**",
 		"lint:fix": "eslint ./src/** --fix",
-		"dev": "nodemon"
+		"dev": "nodemon",
+		"dev:inspect": "nodemon -e ts,json --exec node --inspect=localhost:9222 -r ts-node/register src/main.ts"
 	},
 	"author": "Kirill Zhukovskiy",
 	"license": "ISC",
