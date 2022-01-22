@@ -5,6 +5,9 @@ import { BaseController } from '../common/base.controller';
 import { HTTPError } from '../errors/http-error.class';
 import { TYPES } from '../types';
 import { ILogger } from './../logger/logger.interface';
+import { UserLoginDto } from './dto/user-login.dto';
+import { UserRegisterDto } from './dto/user-register.dto';
+import { User } from './user.entity';
 import { IUsersController } from './users.controller.interface';
 
 @injectable()
@@ -17,11 +20,18 @@ export class UserController extends BaseController implements IUsersController {
 		]);
 	}
 
-	login(req: Request, res: Response, next: NextFunction): void {
+	login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
+		console.log(body);
 		next(new HTTPError(401, 'ошибка авторизации', 'login'));
 	}
 
-	register(req: Request, res: Response, next: NextFunction): void {
-		this.ok(res, 'register');
+	async register(
+		{ body }: Request<{}, {}, UserRegisterDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const newUser = new User(body.email, body.name);
+		await newUser.setPassword(body.password);
+		this.ok(res, newUser);
 	}
 }
