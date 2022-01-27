@@ -18,6 +18,7 @@ export class UsersRepository implements IUsersRepository {
 		});
 	}
 	public async find(email: string): Promise<UserModel | null> {
+		console.log('[UsersRepository]', email);
 		return await this.prismaService.client.userModel.findFirst({
 			where: {
 				email,
