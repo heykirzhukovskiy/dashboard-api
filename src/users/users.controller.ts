@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify';
 import { sign } from 'jsonwebtoken';
 import 'reflect-metadata';
 import { BaseController } from '../common/base.controller';
+import { AuthGuard } from '../common/auth.guard';
 import { IConfigService } from '../config/config.service.interface';
 import { HTTPError } from '../errors/http-error.class';
 import { TYPES } from '../types';
@@ -17,7 +18,7 @@ import { IUsersService } from './users.service.interface';
 export class UserController extends BaseController implements IUsersController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
-		@inject(TYPES.UserService) private userService: IUsersService,
+		@inject(TYPES.UsersService) private userService: IUsersService,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
@@ -38,7 +39,7 @@ export class UserController extends BaseController implements IUsersController {
 				path: '/info',
 				method: 'get',
 				func: this.info,
-				middlewares: [],
+				middlewares: [new AuthGuard()],
 			},
 		]);
 	}
@@ -72,7 +73,8 @@ export class UserController extends BaseController implements IUsersController {
 	}
 
 	async info({ user }: Request, res: Response, next: NextFunction): Promise<void> {
-		this.ok(res, { email: user });
+		const userInfo = await this.userService.getUserInfo(user);
+		this.ok(res, { email: userInfo?.email, id: userInfo?.id });
 	}
 
 	private signJWT(email: string, secret: string): Promise<string> {

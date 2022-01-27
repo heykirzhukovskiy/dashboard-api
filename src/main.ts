@@ -13,7 +13,7 @@ import { UserController } from './users/users.controller';
 import { IUsersController } from './users/users.controller.interface';
 import { UsersRepository } from './users/users.repository';
 import { IUsersRepository } from './users/users.repository.interface';
-import { UserService } from './users/users.service';
+import { UsersService } from './users/users.service';
 import { IUsersService } from './users/users.service.interface';
 
 // async function bootstrap() {
@@ -36,7 +36,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
 	bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter).inSingletonScope();
 	bind<IUsersController>(TYPES.UserController).to(UserController).inSingletonScope();
-	bind<IUsersService>(TYPES.UserService).to(UserService).inSingletonScope();
+	bind<IUsersService>(TYPES.UsersService).to(UsersService).inSingletonScope();
 	bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
 	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 	bind<IUsersRepository>(TYPES.UsersRepository).to(UsersRepository).inSingletonScope();

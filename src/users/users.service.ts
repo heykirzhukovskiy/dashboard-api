@@ -9,7 +9,7 @@ import { IUsersRepository } from './users.repository.interface';
 import { IUsersService } from './users.service.interface';
 
 @injectable()
-export class UserService implements IUsersService {
+export class UsersService implements IUsersService {
 	constructor(
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
@@ -37,5 +37,9 @@ export class UserService implements IUsersService {
 		const newUser = new User(existingUser.email, existingUser.name, existingUser.password);
 
 		return newUser.validatePassword(password);
+	}
+
+	public async getUserInfo(email: string): Promise<UserModel | null> {
+		return this.usersRepository.find(email);
 	}
 }
